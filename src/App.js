@@ -58,7 +58,7 @@ class Header extends Component {
     );
   }
 }
-
+/*
 class Content extends Component {
   render() {
     const { activities } = this.props;
@@ -84,7 +84,37 @@ class Content extends Component {
     );
   }
 }
+*/
 
+class Content extends Component {
+  render() {
+    const { activities } = this.props;
+    return (
+      <div className="content">
+        <div className="line" />
+        {activities.map(activity => <ActivityItem activity={activity} />)}
+      </div>
+    );
+  }
+}
+
+class ActivityItem extends Component {
+  render() {
+    const { activity } = this.props;
+    return (
+      <div className="item">
+        <div className="avatar">
+          <img alt={activity.text} src={activity.user.avatar} />
+          {activity.user.name}
+        </div>
+
+        <span className="time">{activity.timestamp}</span>
+        <p>{activity.text}</p>
+        <div className="commentCount">{activity.comments.length}</div>
+      </div>
+    );
+  }
+}
 class Timeline extends React.Component {
   render() {
     return (
