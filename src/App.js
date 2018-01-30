@@ -48,10 +48,15 @@ class App extends Component {
   }
 }
 
-class Header extends Component {
+/*class Header extends Component {
   render() {
+    let searchInputClasses = ["searchInput"];
+
+    if (this.state.searchVisible) {
+      searchInputClasses.push("active");
+    }
     return (
-      <div className="header">
+      // <div className="header">
         <div className="menuIcon">
           <div className="dashTop" />
           <div className="dashBottom" />
@@ -60,11 +65,79 @@ class Header extends Component {
         <span className="title">{this.props.title}</span>
         <input type="text" className="searchInput" placeholder="Search..." />
         <div className="fa fa-search searchIcon" />
+      </div> ///
+      <div className="header">
+        <div className="fa fa-more" />
+        <span className="title">{this.props.title}</span>
+        <input
+          type="text"
+          className={searchInputClasses.join("")}
+          placeholder="Search..."
+        />
+        <div className="fa fa-search searchIcon" />
+      </div>
+    );
+  }
+}*/
+
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchVisible: false
+    };
+  }
+  showSearch() {
+    this.setState({
+      searchVisible: !this.state.searchVisible
+    });
+  }
+
+  render() {
+    // Classes to add to the <input /> element
+    let searchInputClasses = ["searchInput"];
+
+    // Update the class array if the state is visible
+    if (this.state.searchVisible) {
+      searchInputClasses.push("active");
+    }
+
+    const wrapperStyle = {
+      backgroundColor: "rgba(251,202,43,1)"
+    };
+    const titleStyle = {
+      color: "#111111"
+    };
+
+    const menuColor = {
+      backgroundColor: "#111111"
+    };
+    return (
+      <div style={wrapperStyle} className="header">
+        <div className="menuIcon">
+          <div className="dashTop" style={menuColor} />
+          <div className="dashBottom" style={menuColor} />
+          <div className="circle" style={menuColor} />
+        </div>
+        <span style={titleStyle} className="title">
+          {this.props.title}
+        </span>
+
+        <input
+          type="text"
+          className={searchInputClasses.join(" ")}
+          placeholder="Search ..."
+        />
+
+        <div
+          style={titleStyle}
+          onClick={this.showSearch.bind(this)}
+          className="searchIcon"
+        />
       </div>
     );
   }
 }
-
 Header.defaultProps = {
   title: "Github activity"
 };
@@ -343,4 +416,7 @@ UserLink.PropTypes = {
   }
 };
 */
+
+//const style = { color: "blue" };
+//<div style={style}>this text will have the color blue</div>;
 export default App;
