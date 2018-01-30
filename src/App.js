@@ -25,6 +25,10 @@ const activities = [
     comments: [{ from: "Nate", text: "I am so jealous" }]
   }
 ];
+
+const data = require("./data.json");
+const fetchEvents = () => Promise.resolve(data).then(json => json.slice(0, 4));
+
 class App extends Component {
   render() {
     return (
@@ -87,7 +91,63 @@ class Content extends Component {
 }
 */
 
+class Container extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { refreshing: false };
+  }
+
+  componentWillMount() {
+    this.setState({ activities: data });
+  }
+
+  onComponentRefresh() {
+    this.setState({ refreshing: false });
+  }
+
+  render() {
+    const { refreshing } = this.state;
+    return (
+      /* <div className="content">
+        <div className="line" />
+        {activities.map(activity => <ActivityItem activity={activity} />)}
+      </div>*/
+      <div className="notificationsFrame">
+        <div className="panel">
+          <Header title="Github activity" />
+          <Content
+            onComponentRefresh={this.onComponentRefresh.bind(this)}
+            requestRefresh={refreshing}
+            fetchData={fetchEvents}
+          />
+          <Footer>
+            <button onClick={this.refresh.bind(this)}>
+              <i className="fa fa-refresh" />
+              Refresh
+            </button>
+          </Footer>
+        </div>
+      </div>
+    );
+  }
+}
+
 class Content extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activities: []
+    };
+  }
+  componentWillMount() {
+    this.setState({ activities: data });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.requestRefresh !== this.props.requestRefresh) {
+      this.setState({ loading: true }, this.updateData);
+    }
+  }
   render() {
     const { activities } = this.props;
     return (
@@ -99,6 +159,11 @@ class Content extends Component {
   }
 }
 
+class Footer extends Component {
+  render() {
+    return <div className="footer">{this.props.children}</div>;
+  }
+}
 class ActivityItem extends Component {
   render() {
     const { activity } = this.props;
@@ -121,6 +186,15 @@ class Clock extends Component {
   constructor(props) {
     super(props);
     this.state = this.getTime();
+  }
+
+  componentDidMount() {
+    this.setTimer();
+  }
+  componentWillMount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
   }
   setTimer() {
     clearTimeout(this.timeout);
@@ -151,6 +225,7 @@ class Clock extends Component {
     );
   }
 }
+
 /*
 class Timeline extends React.Component {
   render() {
