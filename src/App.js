@@ -36,6 +36,7 @@ class App extends Component {
         <div className="panel">
           <Header title="hola" />
           <Content activities={activities} />
+          <Clock />
         </div>
       </div>
     );
@@ -115,6 +116,42 @@ class ActivityItem extends Component {
     );
   }
 }
+
+class Clock extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.getTime();
+  }
+  setTimer() {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.updateClock.bind(this), 1000);
+  }
+  updateClock() {
+    const currentT = new Date();
+    this.setState({ currentT: currentT }, this.setTimer);
+  }
+
+  getTime() {
+    const currentT = new Date();
+    return {
+      hours: currentT.getHours(),
+      minutes: currentT.getMinutes(),
+      seconds: currentT.getSeconds(),
+      ampm: currentT.getHours() >= 12 ? "pm" : "am"
+    };
+  }
+  render() {
+    const { hours, minutes, seconds, ampm } = this.state;
+    return (
+      <div className="clock">
+        {hours === 0 ? 12 : hours > 12 ? hours - 12 : hours}:{minutes > 9
+          ? minutes
+          : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`} {ampm}
+      </div>
+    );
+  }
+}
+/*
 class Timeline extends React.Component {
   render() {
     return (
@@ -199,5 +236,5 @@ class Timeline extends React.Component {
     );
   }
 }
-
+*/
 export default App;
