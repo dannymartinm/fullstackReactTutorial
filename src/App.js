@@ -121,18 +121,13 @@ class Header extends React.Component {
         </div>
         <span style={titleStyle} className="title">
           {this.props.title}
+          <input type="text" placeholder="Search ..." />
         </span>
-
-        <input
-          type="text"
-          className={searchInputClasses.join(" ")}
-          placeholder="Search ..."
-        />
 
         <div
           style={titleStyle}
           onClick={this.showSearch.bind(this)}
-          className="searchIcon"
+          className="fa fa-search searchIcon"
         />
       </div>
     );
@@ -141,6 +136,45 @@ class Header extends React.Component {
 Header.defaultProps = {
   title: "Github activity"
 };
+
+class SearchForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    searchVisible: PropTypes.bool
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: ""
+    };
+  }
+  updateSearchInput(e) {
+    const val = e.target.value;
+    this.state({
+      searchText: val
+    });
+  }
+  render() {
+    const { searchVisible } = this.state;
+    let searchClasses = ["searchInput"];
+    if (searchVisible) {
+      searchClasses.push("active");
+    }
+    return (
+      <form className="header">
+        <input
+          type="search"
+          className={searchClasses.join("")}
+          onChange={this.updateSearchInput.bind(this)}
+          placeholder="Search..."
+        />
+        <div onClick={this.showSearch.bind(this)} />
+      </form>
+    );
+  }
+}
+
 /*
 class Content extends Component {
   render() {
