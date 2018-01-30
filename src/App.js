@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import "./Timeline.css";
+import PropTypes from "prop-types";
 
 const activities = [
   {
@@ -63,6 +64,10 @@ class Header extends Component {
     );
   }
 }
+
+Header.defaultProps = {
+  title: "Github activity"
+};
 /*
 class Content extends Component {
   render() {
@@ -226,6 +231,16 @@ class Clock extends Component {
   }
 }
 
+Clock.propTypes = {
+  title: PropTypes.string.isRequired,
+  count: PropTypes.number,
+  isOn: PropTypes.bool,
+  onDisplay: PropTypes.fun,
+  symbol: PropTypes.symbol,
+  user: PropTypes.object,
+  name: PropTypes.node,
+  alarmColor: PropTypes.oneOfType(["red", "blue", "green"])
+};
 /*
 class Timeline extends React.Component {
   render() {
@@ -311,5 +326,21 @@ class Timeline extends React.Component {
     );
   }
 }
+*/
+
+//Ejemplo Custom types
+/*
+UserLink.PropTypes = {
+  userWithName: (props, propName, componentName) => {
+    if (!props[propName] || !props[propName].name) {
+      return new Error(
+        "Invalid " +
+          propName +
+          ":no name property defined for component " +
+          componentName
+      );
+    }
+  }
+};
 */
 export default App;
